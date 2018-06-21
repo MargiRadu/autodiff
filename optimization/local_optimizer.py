@@ -12,7 +12,7 @@ class IterativeOptimizer:
         self.feed_length = 0
 
     def get_variable_values(self):
-        return {k: v['current_value'] for k,v in self.variable_info.items()}
+        return {k: v['current_value'] for k, v in self.variable_info.items()}
 
     def update_rule(self, vid, gradients):
         raise NotImplementedError()
@@ -38,7 +38,7 @@ class IterativeOptimizer:
         self.feed_dict = feed_dict
         self.feed_length = min([len(vals) for vals in feed_dict.values()])
 
-        # TODO: extend to a intialization policy (maybe upstream, tho)
+        # TODO: extend to a initialization policy (maybe upstream, tho)
         self.variable_info = {}
         for vid, init_value in variable_init_feed_dict.items():
             self.init_variable(vid, init_value)
@@ -96,14 +96,14 @@ class MiniBatchSGD(IterativeOptimizer):
                 for fid, vals in self.feed_dict.items()}
 
     def gather_gradients(self, graph, variable_ids, loss_id):
-        #return self.gradients_f(graph, self.next_batch(), self.make_variable_feed_dict(), self.constant_feed_dict, 'avg')
+        # return self.gradients_f(graph, self.next_batch(), self.make_variable_feed_dict(), self.constant_feed_dict, 'avg')
         a = active_section()
         next_batch = self.next_batch()
         variable_feed_dict = self.make_variable_feed_dict()
 
-        return a.backend.gradients(graph=graph,
-                                   target_node_id=a.loss_id,
-                                   feed_dict=next_batch,
-                                   variable_feed_dict=variable_feed_dict,
-                                   constant_feed_dict=self.constant_feed_dict,
-                                   reduce_strategy='avg')
+        return self.gradients_f(graph=graph,
+                                target_node_id=a.loss_id,
+                                feed_dict=next_batch,
+                                variable_feed_dict=variable_feed_dict,
+                                constant_feed_dict=self.constant_feed_dict,
+                                reduce_strategy='avg')

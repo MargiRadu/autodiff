@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d792a1c1-bab8-49b9-b2a7-5e4f0ed12e78" name="Default" comment="" />
+    <list default="true" id="d792a1c1-bab8-49b9-b2a7-5e4f0ed12e78" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/optimization/downpour/downpour_master.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/optimization/downpour/downpour_worker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autodiff/backend/forward_accumulation_backend.py" beforeDir="false" afterPath="$PROJECT_DIR$/autodiff/backend/forward_accumulation_backend.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autodiff_old/computation_graph/active_section.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autodiff_old/computation_graph/graph.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autodiff_old/computation_graph/ops.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autodiff_old/dual_number/ops.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autodiff_old/dual_number/structure.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autodiff_old/engine/container.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/optimization/optimizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/local_optimizer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/script_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/script.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -11,25 +24,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="script_new.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/script_new.py">
+      <file leaf-file-name="script.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/script.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="32">
-              <caret line="2" column="39" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
+            <state relative-caret-position="240">
+              <caret line="15" column="75" selection-start-line="15" selection-start-column="75" selection-end-line="15" selection-end-column="75" />
+              <folding>
+                <element signature="e#0#65#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="forward_accumulation_backend.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="forward_accumulation_backend.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/autodiff/backend/forward_accumulation_backend.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="49" column="69" lean-forward="true" selection-start-line="49" selection-start-column="69" selection-end-line="49" selection-end-column="69" />
+            <state relative-caret-position="560">
+              <caret line="35" column="11" lean-forward="true" selection-start-line="35" selection-start-column="11" selection-end-line="35" selection-end-column="11" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
-                <element signature="e#228#267#0" />
-                <element signature="e#373#1230#0" />
+                <element signature="e#6914#9759#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="downpour_master.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/optimization/downpour/downpour_master.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="downpour_worker.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/optimization/downpour/downpour_worker.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="640">
+              <caret line="55" selection-start-line="55" selection-end-line="55" />
             </state>
           </provider>
         </entry>
@@ -37,8 +66,8 @@
       <file leaf-file-name="active_section.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/autodiff/active_section.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1776">
-              <caret line="113" column="24" selection-start-line="113" selection-start-column="24" selection-end-line="113" selection-end-column="24" />
+            <state relative-caret-position="208">
+              <caret line="79" column="34" selection-start-line="79" selection-start-column="34" selection-end-line="79" selection-end-column="34" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
               </folding>
@@ -46,13 +75,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="optimizer.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/optimization/optimizer.py">
+      <file leaf-file-name="local_optimizer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/optimization/local_optimizer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="624">
-              <caret line="39" selection-start-line="39" selection-end-line="39" />
+            <state relative-caret-position="504">
+              <caret line="103" column="31" selection-start-line="103" selection-start-column="31" selection-end-line="103" selection-end-column="31" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#150#271#0" />
               </folding>
             </state>
           </provider>
@@ -70,7 +100,7 @@
       <file leaf-file-name="dual_number_engine.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/autodiff/backend/dual_number_engine.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
+            <state relative-caret-position="864">
               <caret line="75" column="49" selection-start-line="75" selection-start-column="49" selection-end-line="75" selection-end-column="49" />
             </state>
           </provider>
@@ -90,6 +120,9 @@
       <find>__add</find>
       <find>gradients_f</find>
     </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -116,17 +149,22 @@
         <option value="$PROJECT_DIR$/autodiff/graph.py" />
         <option value="$PROJECT_DIR$/autodiff/backend/dual_number_engine.py" />
         <option value="$PROJECT_DIR$/optimization/optimizer.py" />
+        <option value="$PROJECT_DIR$/optimization/remote_optimizer.py" />
         <option value="$PROJECT_DIR$/autodiff/active_section.py" />
-        <option value="$PROJECT_DIR$/script_new.py" />
         <option value="$PROJECT_DIR$/autodiff/backend/forward_accumulation_backend.py" />
+        <option value="$PROJECT_DIR$/optimization/downpour/downpour_master.py" />
+        <option value="$PROJECT_DIR$/optimization/local_optimizer.py" />
+        <option value="$PROJECT_DIR$/script_new.py" />
+        <option value="$PROJECT_DIR$/optimization/downpour/downpour_worker.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1904" />
-    <option name="width" value="1946" />
-    <option name="height" value="2107" />
+    <option name="x" value="-11" />
+    <option name="width" value="1943" />
+    <option name="height" value="2102" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -154,12 +192,13 @@
             <path>
               <item name="auto_diff" type="b2602c69:ProjectViewProjectNode" />
               <item name="auto_diff" type="462c0819:PsiDirectoryNode" />
-              <item name="autodiff_old" type="462c0819:PsiDirectoryNode" />
+              <item name="optimization" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="auto_diff" type="b2602c69:ProjectViewProjectNode" />
               <item name="auto_diff" type="462c0819:PsiDirectoryNode" />
               <item name="optimization" type="462c0819:PsiDirectoryNode" />
+              <item name="downpour" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -223,7 +262,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/script_new.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\rdu-mrg\source\repos\auto_diff\script.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -251,32 +290,45 @@
       <option name="presentableId" value="Default" />
       <updated>1523381146056</updated>
     </task>
+    <task id="LOCAL-00001" summary="Fixed backend accumulation">
+      <created>1529584336487</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1529584336488</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="2208" height="1208" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.106814" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.06864564" />
-      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Python Console" order="7" visible="true" weight="0.21428572" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32931355" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Python Console" order="7" weight="0.21428572" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.30705008" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.42764378" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.42764378" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32931355" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fixed backend accumulation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed backend accumulation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -286,8 +338,33 @@
           <line>2</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/autodiff/active_section.py</url>
+          <line>101</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/optimization/local_optimizer.py</url>
+          <line>63</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/optimization/local_optimizer.py</url>
+          <line>103</line>
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/optimization/local_optimizer.py</url>
+          <line>36</line>
+          <option name="timeStamp" value="66" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/autodiff/backend/forward_accumulation_backend.py</url>
+          <line>69</line>
+          <option name="timeStamp" value="67" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="57" />
+      <option name="time" value="74" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -301,7 +378,39 @@
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
+    <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>a.backend.gradients(graph=graph,
+                                   target_node_id=a.loss_id,
+                                   feed_dict=next_batch,
+                                   variable_feed_dict=variable_feed_dict,
+                                   constant_feed_dict=self.constant_feed_dict,
+                                   reduce_strategy='avg')</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+    </expressions>
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>set(constant_feed.keys()).union(set(variable_feed.keys())).union(set(feeder_feed.keys()))</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.batch_forward_sweep(graph, variable_id, constant_feed_dict, variable_feed_dict, feed_dict)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>a.backend.gradients(graph, next_batch, variable_feed_dict, self.constant_feed_dict, 'avg')</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>a.backend.gradients</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>(graph, constant_feed_dict, variable_feed_dict, feeder_feed_dict_slice, -1)</expression-string>
         <language-id>Python</language-id>
@@ -327,44 +436,9 @@
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>self.ops[op]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>feeder_feed[node_id]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>constant_feed.keys().union(variable_feed.keys()).union(feeder_feed.keys())</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>graph, variable_ids, loss_id, self.next_batch(), self.make_variable_feed_dict(), self.constant_feed_dict, 'avg'</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/optimization_script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="28" column="20" selection-start-line="28" selection-start-column="20" selection-end-line="28" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/autodiff_old/computation_graph/ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1136">
-          <caret line="131" column="36" selection-start-line="131" selection-start-column="36" selection-end-line="131" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/script.py" />
     <entry file="file://$PROJECT_DIR$/autodiff_old/computation_graph/active_section.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1056">
@@ -635,12 +709,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/autodiff/backend/dual_number_engine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="864">
+          <caret line="75" column="49" selection-start-line="75" selection-start-column="49" selection-end-line="75" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/autodiff/active_section.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1776">
-          <caret line="113" column="24" selection-start-line="113" selection-start-column="24" selection-end-line="113" selection-end-column="24" />
+        <state relative-caret-position="208">
+          <caret line="79" column="34" selection-start-line="79" selection-start-column="34" selection-end-line="79" selection-end-column="34" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autodiff/backend/forward_accumulation_backend.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="560">
+          <caret line="35" column="11" lean-forward="true" selection-start-line="35" selection-start-column="11" selection-end-line="35" selection-end-column="11" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#6914#9759#0" />
           </folding>
         </state>
       </provider>
@@ -652,41 +744,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/script_new.py">
+    <entry file="file://$PROJECT_DIR$/optimization/local_optimizer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="39" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/optimization/optimizer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
+        <state relative-caret-position="504">
+          <caret line="103" column="31" selection-start-line="103" selection-start-column="31" selection-end-line="103" selection-end-column="31" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#150#271#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/autodiff/backend/dual_number_engine.py">
+    <entry file="file://$PROJECT_DIR$/script.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="75" column="49" selection-start-line="75" selection-start-column="49" selection-end-line="75" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/autodiff/backend/forward_accumulation_backend.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="49" column="69" lean-forward="true" selection-start-line="49" selection-start-column="69" selection-end-line="49" selection-end-column="69" />
+        <state relative-caret-position="240">
+          <caret line="15" column="75" selection-start-line="15" selection-start-column="75" selection-end-line="15" selection-end-column="75" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#228#267#0" />
-            <element signature="e#373#1230#0" />
+            <element signature="e#0#65#0" expanded="true" />
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/optimization/downpour/downpour_worker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="640">
+          <caret line="55" selection-start-line="55" selection-end-line="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/optimization/remote_optimizer.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/optimization/downpour/downpour_master.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
   <component name="masterDetails">

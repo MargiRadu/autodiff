@@ -2,7 +2,7 @@ import numpy as np
 from autodiff.backend.dual_number_engine import DualNumberEngine
 
 
-class LocalForwardAccumulationBackend:
+class ForwardAccumulationBackend:
     """
         Local backend that implements forward accumulation for gradient computation.
         The forward accumulation algorithm implemented:
@@ -18,6 +18,7 @@ class LocalForwardAccumulationBackend:
 
     def __init__(self):
         self.engine = None
+        self.name = 'forward-acc'
 
     def init_capabilities(self, ops_set):
         self.engine = DualNumberEngine(ops_set)
@@ -45,7 +46,7 @@ class LocalForwardAccumulationBackend:
         Computes the gradients for the variable nodes using forward accumulation.
 
         :param graph:               Computation graph. i.e. dict mapping node ids to <op name, input ids, output ids>.
-        :param target_node_id:         Node for which to compute the derrivative.
+        :param target_node_id:         Node for which to compute the derivative.
         :param feed_dict:           Dict mapping node ids to a list of input values.
         :param variable_feed_dict:  Dict mapping variable ids to their current values.
         :param constant_feed_dict:  Dict mapping constant ids to their constant values.
@@ -77,7 +78,7 @@ class LocalForwardAccumulationBackend:
 
     def batch_forward_sweep(self, graph, active_variable_id, constant_feed, variable_feed, feeder_batch):
         """
-        Performs a series of forward sweeps of the computation graph, one for each input configuration of the feeders.
+        Performs a series of sweeps of the computation graph, one for each input configuration of the feeders.
 
         :param graph:                   The computation graph.
         :param active_variable_id:      The id of the current variable considered for differentiation.
@@ -94,7 +95,7 @@ class LocalForwardAccumulationBackend:
         feed_dicts = [{k: v[i] for k, v in feeder_batch.items()} for i in range(n)]
 
         # Gather results from consecutive forward sweeps.
-        sweep_results = [self.forward_sweep(graph, active_variable_id, constant_feed, variable_feed, feed_dicts[i])
+        sweep_results = [self.sweep(graph, active_variable_id, constant_feed, variable_feed, feed_dicts[i])
                          for i in range(n)]
 
         # Build lists of dual numbers for each node.
@@ -108,7 +109,7 @@ class LocalForwardAccumulationBackend:
 
         return graph_dual_map
 
-    def forward_sweep(self, graph, active_variable_id, constant_feed, variable_feed, feeder_feed):
+    def sweep(self, graph, active_variable_id, constant_feed, variable_feed, feeder_feed):
         """
         Performs a forward sweep of the computation graph. The function returns the dual values for the entire
         computation graph s.t. it can be used for both gradient computation and function evaluation.
