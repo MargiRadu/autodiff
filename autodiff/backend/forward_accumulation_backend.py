@@ -22,91 +22,58 @@ class LocalForwardAccumulationBackend:
     def init_capabilities(self, ops_set):
         self.engine = DualNumberEngine(ops_set)
 
-    def values(self, graph, feed_dict, target_node_id, variable_feed_dict, constant_feed_dict):
+    def values(self, graph, target_node_id, feed_dict, variable_feed_dict, constant_feed_dict):
         """
         Computes the values for the specified node using forward accumulation.
+
         :param graph:               Computation graph. i.e. dict mapping node ids to <op name, input ids, output ids>.
+        :param target_node_id:      Node for which to compute the value.
         :param feed_dict:           Dict mapping node ids to a list of input values.
-        :return:                    A list of values for all input combinations.
+        :param variable_feed_dict:  Dict mapping variable ids to their current values.
+        :param constant_feed_dict:  Dict mapping constant ids to their constant values.
+        :return:                    A list of values for all input values.
         """
 
-        # Pick the minimum of the feed lists to represent the entire feed dict.
-        n = min([len(vals) for feeder_id, vals in feed_dict.items()])
+        variable_id = list(variable_feed_dict.keys())[0]
+        node_duals = self.batch_forward_sweep(graph, variable_id, constant_feed_dict, variable_feed_dict, feed_dict)
+        target_values = [d.real for d in node_duals[target_node_id]]
 
-        vals = []
-        for i in range(n):
-            feeder_feed_dict_slice = {k: v[i] for k, v in feed_dict.items()}
-            node_vals = self._single_forward_sweep(graph, constant_feed_dict, variable_feed_dict, feeder_feed_dict_slice, -1)
+        return target_values
 
-            vals.append(node_vals[target_node_id].real)
-
-        return vals
-
-    def gradients(self, graph, feed_dict, variable_feed_dict, constant_feed_dict, reduce_strategy):
+    def gradients(self, graph, target_node_id, feed_dict, variable_feed_dict, constant_feed_dict, reduce_strategy):
         """
         Computes the gradients for the variable nodes using forward accumulation.
 
         :param graph:               Computation graph. i.e. dict mapping node ids to <op name, input ids, output ids>.
+        :param target_node_id:         Node for which to compute the derrivative.
         :param feed_dict:           Dict mapping node ids to a list of input values.
         :param variable_feed_dict:  Dict mapping variable ids to their current values.
         :param constant_feed_dict:  Dict mapping constant ids to their constant values.
-        :param reduce_strategy:     Method of processing a set of gradients. Supports avg, [median].
-        :return:                    A dict that maps variable ids to their gradients.
+        :param reduce_strategy:     Method of processing a set of gradients.
+                                    Supports <avg>, <median>, <None> - returns list of gradients.
+        :return:                    A map that connects variable ids to
+                                    a gradient or list of gradients (if reduce strategy is set to None).
         """
-        feeder_vid_indexed_duals = self._batch_variable_sweep(graph, constant_feed_dict, variable_feed_dict, feed_dict)
 
-        # Transform to list of gradients for each vid.
-        vid_indexed_gradients = {}
-        for vid, duals_list in feeder_vid_indexed_duals.items():
-            for all_duals in duals_list:
-                for node_id, dual in all_duals.items():
-                    if vid not in vid_indexed_gradients:
-                        vid_indexed_gradients[vid] = []
-                    vid_indexed_gradients[vid].append(dual.dual)
-
-        # Reduce gradients.
+        # Select reduce strategy based on parameter:
         if reduce_strategy == 'avg':
             reducer = np.mean
+        elif reduce_strategy == 'median':
+            reducer = np.median
+        elif reduce_strategy is None:
+            def _nop(x): return x
+            reducer = _nop
         else:
             raise NotImplementedError('Reduce strategy {} is not implemented.'.format(reduce_strategy))
 
-        reduced_values = {}
-        for k, v in vid_indexed_gradients.items():
-            reduced_values[k] = reducer(v)
+        variable_gradient_map = {}
+        for variable_id in variable_feed_dict.keys():
+            node_duals = self.batch_forward_sweep(graph, variable_id, constant_feed_dict, variable_feed_dict, feed_dict)
+            target_gradients = [d.dual for d in node_duals[target_node_id]]
 
-        #TODO: return {k: np.mean(v) for k,v in vid_indexed_gradients.items()}
-        return reduced_values
-    #
-    # def _batch_variable_sweep(self, graph, constant_feed, variable_feed, feeder_feed_batch):
-    #     # Gather results for all values of the feeders. TODO: this, as a whole can be done more efficeiently.
-    #     variable_indexed_results = {}
-    #
-    #     # Pick the minimum of the feed lists to represent the entire feed dict.
-    #     n = min([len(vals) for feeder_id, vals in feeder_feed_batch.items()])
-    #
-    #     for i in range(n):
-    #         # Extract ith element from the feeder feed dict.
-    #         feeder_feed_dict_slice = {k: v[i] for k, v in feeder_feed_batch.items()}
-    #         temp_results = self._full_variable_sweep(graph, constant_feed, variable_feed, feeder_feed_dict_slice)
-    #
-    #         # Update the global results.
-    #         for k, v in temp_results.items():
-    #             if k not in variable_indexed_results:
-    #                 variable_indexed_results[k] = []
-    #
-    #             variable_indexed_results[k].append(v)
-    #
-    #     return variable_indexed_results
-    #
-    # def _full_variable_sweep(self, graph, constant_feed, variable_feed, feeder_feed):
-    #     variable_indexed_results = {}
-    #     for variable_id in variable_feed.keys():
-    #         variable_indexed_results[variable_id] = self._single_forward_sweep(graph=graph,
-    #                                                                            active_variable_id=variable_id,
-    #                                                                            constant_feed=constant_feed,
-    #                                                                            variable_feed=variable_feed,
-    #                                                                            feeder_feed=feeder_feed)
-    #     return variable_indexed_results
+            variable_gradient_map[variable_id] = reducer(target_gradients)
+
+        return variable_gradient_map
 
     def batch_forward_sweep(self, graph, active_variable_id, constant_feed, variable_feed, feeder_batch):
         """
@@ -124,7 +91,7 @@ class LocalForwardAccumulationBackend:
         n = min([len(vals) for feeder_id, vals in feeder_batch.items()])
 
         # Build a list of feed dicts.
-        feed_dicts = [{k: v[i] for k,v in feeder_batch.items()} for i in range(n)]
+        feed_dicts = [{k: v[i] for k, v in feeder_batch.items()} for i in range(n)]
 
         # Gather results from consecutive forward sweeps.
         sweep_results = [self.forward_sweep(graph, active_variable_id, constant_feed, variable_feed, feed_dicts[i])
@@ -134,13 +101,12 @@ class LocalForwardAccumulationBackend:
         graph_dual_map = {}
         for graph_result in sweep_results:
             for k, v in graph_result.items():
-                if k in graph_dual_map:
+                if k not in graph_dual_map:
                     graph_dual_map[k] = []
 
                 graph_dual_map[k].append(v)
 
         return graph_dual_map
-
 
     def forward_sweep(self, graph, active_variable_id, constant_feed, variable_feed, feeder_feed):
         """

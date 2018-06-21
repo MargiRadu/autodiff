@@ -66,7 +66,7 @@ class MiniBatchSGD(IterativeOptimizer):
             var_info['iterations'] += 1
 
             old_value = var_info['current_value']
-            new_value = old_value + (self.learning_rate * gradient)
+            new_value = old_value - (self.learning_rate * gradient)
             var_info['current_value'] = new_value
 
             if (abs(new_value - old_value) <= self.epsilon) or (var_info['iterations'] >= self.max_iterations):
@@ -98,4 +98,12 @@ class MiniBatchSGD(IterativeOptimizer):
     def gather_gradients(self, graph, variable_ids, loss_id):
         #return self.gradients_f(graph, self.next_batch(), self.make_variable_feed_dict(), self.constant_feed_dict, 'avg')
         a = active_section()
-        return a.backend.gradients(graph, self.next_batch(), self.make_variable_feed_dict(), self.constant_feed_dict, 'avg')
+        next_batch = self.next_batch()
+        variable_feed_dict = self.make_variable_feed_dict()
+
+        return a.backend.gradients(graph=graph,
+                                   target_node_id=a.loss_id,
+                                   feed_dict=next_batch,
+                                   variable_feed_dict=variable_feed_dict,
+                                   constant_feed_dict=self.constant_feed_dict,
+                                   reduce_strategy='avg')

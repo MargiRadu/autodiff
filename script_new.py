@@ -5,21 +5,23 @@ from autodiff.backend.forward_accumulation_backend import LocalForwardAccumulati
 
 
 with ActiveSection() as section:
+
     x = feeder()
     y = feeder()
-    theta = variable(3)
+    theta = variable(5)
 
     # Define model.
-    model = (x * theta) + (x * 2) + 1
+    model = x * theta
     loss((model - y) * (model - y))
 
+
     section.register_backend(LocalForwardAccumulationBackend())
-    section.register_optimizer(MiniBatchSGD(0.01, 0.001, 32, 5))
+    section.register_optimizer(MiniBatchSGD(0.1, 0.01, batch_size=3, max_iterations=400))
 
     # Run optimizer
-    section.optimize_model({x: [1, 2, 3], y: [4, 5, 6, 7]})
+    section.optimize_model({x: [1, 2, 3], y: [2, 4, 6]})
 
     # Evaluate optimized model
-    results = section.eval(model, {x: [1, 2, 3, 4], y: [0, 0, 0, 0]})
+    results = section.eval(model, {x: [10, 20, 30, 40], y: [0, 0, 0, 0]})
 
     print(results)
