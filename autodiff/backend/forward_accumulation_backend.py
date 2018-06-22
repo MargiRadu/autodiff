@@ -46,7 +46,7 @@ class ForwardAccumulationBackend:
         Computes the gradients for the variable nodes using forward accumulation.
 
         :param graph:               Computation graph. i.e. dict mapping node ids to <op name, input ids, output ids>.
-        :param target_node_id:         Node for which to compute the derivative.
+        :param target_node_id:      Node for which to compute the derivative.
         :param feed_dict:           Dict mapping node ids to a list of input values.
         :param variable_feed_dict:  Dict mapping variable ids to their current values.
         :param constant_feed_dict:  Dict mapping constant ids to their constant values.

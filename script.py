@@ -1,6 +1,6 @@
 from autodiff.graph_nodes import variable, constant, feeder, loss
 from autodiff.active_section import ActiveSection
-from optimization.local_optimizer import MiniBatchSGD
+from optimization.local_iterative_optimizer import MiniBatchSGD
 from autodiff.backend.forward_accumulation_backend import ForwardAccumulationBackend
 
 with ActiveSection() as section:

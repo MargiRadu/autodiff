@@ -1,15 +1,15 @@
-import numpy as np
-
-from autodiff.active_section import active_section
-
 
 class IterativeOptimizer:
 
-    def __init__(self, gradients_f=None):
+    def __init__(self, gradients_f):
         self.gradients_f = gradients_f
         self.variable_info = {}
         self.feed_dict = None
         self.feed_length = 0
+        self.constant_feed_dict = None
+        self.loss_id = None
+        self.variable_ids = None
+        self.graph = None
 
     def get_variable_values(self):
         return {k: v['current_value'] for k, v in self.variable_info.items()}
@@ -29,11 +29,27 @@ class IterativeOptimizer:
     def make_variable_feed_dict(self):
         return {k: v['current_value'] for k, v in self.variable_info.items()}
 
-    def optimize(self, graph, variable_ids, loss_id, feed_dict, variable_init_feed_dict, constant_feed_dict):
-        if self.gradients_f is None:
-            a = active_section()
-            self.gradients_f = a.backend.gradients
+    def init_optimizer(self, graph, feed_dict, constant_feed_dict, variable_ids, loss_id):
+        self.constant_feed_dict = constant_feed_dict
+        self.feed_dict = feed_dict
+        self.feed_length = min([len(vs) for vs in feed_dict.values()])
+        self.loss_id = loss_id
+        self.variable_ids = variable_ids
+        self.graph = graph
 
+    def optimize_step(self, variable_feed_dict, iterations):
+        self.variable_info = {}
+        for vid, init_value in variable_feed_dict.items():
+            self.init_variable(vid, init_value)
+
+        for _ in range(iterations):
+            vid_grad_map = self.gather_gradients(self.graph, self.variable_ids, self.loss_id)
+            for vid, grads in vid_grad_map.items():
+                self.update_rule(vid, grads)
+
+        return self.get_variable_values()
+
+    def optimize(self, graph, variable_ids, loss_id, feed_dict, variable_init_feed_dict, constant_feed_dict):
         self.constant_feed_dict = constant_feed_dict
         self.feed_dict = feed_dict
         self.feed_length = min([len(vals) for vals in feed_dict.values()])
@@ -96,13 +112,11 @@ class MiniBatchSGD(IterativeOptimizer):
                 for fid, vals in self.feed_dict.items()}
 
     def gather_gradients(self, graph, variable_ids, loss_id):
-        # return self.gradients_f(graph, self.next_batch(), self.make_variable_feed_dict(), self.constant_feed_dict, 'avg')
-        a = active_section()
         next_batch = self.next_batch()
         variable_feed_dict = self.make_variable_feed_dict()
 
         return self.gradients_f(graph=graph,
-                                target_node_id=a.loss_id,
+                                target_node_id=loss_id,
                                 feed_dict=next_batch,
                                 variable_feed_dict=variable_feed_dict,
                                 constant_feed_dict=self.constant_feed_dict,
