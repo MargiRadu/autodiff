@@ -1,8 +1,11 @@
+from optimization.optimizer import Optimizer
 
-class IterativeOptimizer:
+
+class IterativeOptimizer(Optimizer):
 
     def __init__(self, gradients_f):
-        self.gradients_f = gradients_f
+        super().__init__()
+        self.backend = gradients_f
         self.variable_info = {}
         self.feed_dict = None
         self.feed_length = 0
@@ -67,8 +70,8 @@ class IterativeOptimizer:
 
 class MiniBatchSGD(IterativeOptimizer):
 
-    def __init__(self, learning_rate, epsilon, batch_size=32, max_iterations=1000, gradients_f=None):
-        super().__init__(gradients_f)
+    def __init__(self, learning_rate, epsilon, batch_size=32, max_iterations=1000, backend=None):
+        super().__init__(backend)
 
         self.learning_rate = learning_rate
         self.epsilon = epsilon
@@ -115,9 +118,9 @@ class MiniBatchSGD(IterativeOptimizer):
         next_batch = self.next_batch()
         variable_feed_dict = self.make_variable_feed_dict()
 
-        return self.gradients_f(graph=graph,
-                                target_node_id=loss_id,
-                                feed_dict=next_batch,
-                                variable_feed_dict=variable_feed_dict,
-                                constant_feed_dict=self.constant_feed_dict,
-                                reduce_strategy='avg')
+        return self.backend.gradients(graph=graph,
+                                      target_node_id=loss_id,
+                                      feed_dict=next_batch,
+                                      variable_feed_dict=variable_feed_dict,
+                                      constant_feed_dict=self.constant_feed_dict,
+                                      reduce_strategy='avg')

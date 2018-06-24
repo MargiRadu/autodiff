@@ -77,14 +77,14 @@ class ActiveSection:
         self.backend = backend
 
         if self.optimizer is not None:
-            if self.optimizer.gradients_f is None:
-                self.optimizer.gradients_f = self.backend.gradients
+            if self.optimizer.backend is None:
+                self.optimizer.backend = self.backend
 
     def register_optimizer(self, optimizer):
         self.optimizer = optimizer
 
         if self.backend is not None:
-            self.optimizer.gradients_f = self.backend.gradients
+            self.optimizer.backend = self.backend
 
     def register_loss(self, loss_node):
         if self.loss_id is None:
