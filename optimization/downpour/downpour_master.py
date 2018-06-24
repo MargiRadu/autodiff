@@ -42,7 +42,6 @@ class DownpourMasterProtocol(Protocol):
 
         elif msg_type == 'set:release-ack':
             log.msg('Worker sucessfully released.')
-            #self.transport.loseConnection()
             self.release_callback(self.pid)
 
         else:
@@ -76,6 +75,8 @@ class DownpourSGD(Optimizer):
                  backend=None):
         super().__init__()
 
+        self.worker_addresses = worker_addresses
+
         # Application info.
         self.optimizer_lr = learning_rate
         self.optimizer_eps = epsilon
@@ -86,16 +87,15 @@ class DownpourSGD(Optimizer):
 
         # Distributed state
         self.iterations = 0
-        self.protocol_initialized = [False] * len(worker_addresses)
-        self.converged = [False] * len(worker_addresses)
-        self.released = [False] * len(worker_addresses)
-        self.variable_state = None
-
-        self.worker_addresses = worker_addresses
-
-        # TODO: use different locks...
-        self.master_lock = Lock()
+        self.released_flags = [False] * len(worker_addresses)
+        self.params = None
         self.protocols = []
+
+        # Locks
+        self.released_flags_lock = Lock()
+        self.params_lock = Lock()
+        self.protocols_lock = Lock()
+        self.iterations_lock = Lock()
 
         # Log
         log.startLogging(sys.stdout)
@@ -109,7 +109,7 @@ class DownpourSGD(Optimizer):
         """
 
         # Register the protocol.
-        with self.master_lock:
+        with self.protocols_lock:
             self.protocols.append(protocol)
 
         # Init the optimizer.
@@ -129,43 +129,41 @@ class DownpourSGD(Optimizer):
 
         # Update global variable state under lock.
         global_values = {}
-        with self.master_lock:
+        with self.iterations_lock:
             self.iterations += self.steps
-            for var, new_value in optimized_params.items():
-                old_value = self.variable_state[var]
-                global_values[var] = old_value + ((new_value - old_value) / len(self.protocols))
-                self.variable_state[var] = global_values[var]
+
+        for var, new_value in optimized_params.items():
+            old_value = self.params[var]
+            global_values[var] = old_value + ((new_value - old_value) / len(self.protocols))
+
+            with self.params_lock:
+                self.params[var] = global_values[var]
 
         # Check end of optimization todo: or convergence.
         if self.iterations <= self.optimizer_max_it:
             # Keep going by requesting a new round of optimization
             self.protocols[pid].run_optimizer(global_values)
         else:
-            with self.master_lock:
-                self.converged[pid] = True
-
             self.protocols[pid].release_worker()
 
     def worker_init_successful_callback(self, pid):
-        with self.master_lock:
-            self.protocol_initialized[pid] = True
-
         # Just make the first call to optimize
-        self.protocols[pid].run_optimizer(self.variable_state)
+        self.protocols[pid].run_optimizer(self.params)
 
     def worker_released_callback(self, pid):
-        with self.master_lock:
-            self.released[pid] = True
-            if all(self.released):
-                reactor.stop()
+        with self.released_flags_lock:
+            self.released_flags[pid] = True
+
+        if all(self.released_flags):
+            reactor.stop()
 
     def optimize(self, graph, variable_ids, loss_id, feed_dict, variable_init_feed_dict, constant_feed_dict):
-        """
+        """`
         Runs the distributed optimizer.
         """
 
-        with self.master_lock:
-            self.variable_state = variable_init_feed_dict
+        with self.params_lock:
+            self.params = variable_init_feed_dict
 
         # Establish connections to workers
         endpoints = [TCP4ClientEndpoint(reactor, w[0], w[1]) for w in self.worker_addresses]
@@ -185,13 +183,7 @@ class DownpourSGD(Optimizer):
         reactor.run()
 
     def get_variable_values(self):
-        return self.variable_state
-
-    def has_converged(self):
-        with self.master_lock:
-            did_converge = all(self.converged)
-
-        return did_converge
+        return self.params
 
 
 def _extract_feed_dict_partition(feed_dict, i, p):
